@@ -4,22 +4,46 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "repox"
-version = "0.1.0"
+version = "1.0.0"
 description = "CLI tool for creating and initializing GitHub repositories from the terminal."
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "repox contributors" }
+]
+keywords = ["cli", "github", "git", "developer-tools", "automation"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Version Control :: Git",
+  "Topic :: Utilities",
 ]
 dependencies = [
   "click>=8.0",
   "questionary>=2.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/xyzprtk/repox"
+Repository = "https://github.com/xyzprtk/repox"
+Issues = "https://github.com/xyzprtk/repox/issues"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=7.0",
+  "build>=1.2.0",
+  "twine>=5.0.0",
 ]
 
 [project.scripts]
