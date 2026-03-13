@@ -4,7 +4,7 @@ from unittest import mock
 
 from click.testing import CliRunner
 
-from repokit.cli import main
+from ghinit.cli import main
 
 
 class CliTests(unittest.TestCase):
@@ -16,39 +16,39 @@ class CliTests(unittest.TestCase):
             "templates": {"custom_dir": ""},
         }
 
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=None
-        ), mock.patch("repokit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
-            "repokit.cli.prompt_for_template", return_value="flask"
-        ), mock.patch("repokit.cli.suggest_gitignore", return_value="Python"), mock.patch(
-            "repokit.cli.get_git_author_name", return_value="Alice"
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=None
+        ), mock.patch("ghinit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
+            "ghinit.cli.prompt_for_template", return_value="flask"
+        ), mock.patch("ghinit.cli.suggest_gitignore", return_value="Python"), mock.patch(
+            "ghinit.cli.get_git_author_name", return_value="Alice"
         ), mock.patch(
-            "repokit.cli.confirm_execution", return_value=True
+            "ghinit.cli.confirm_execution", return_value=True
         ), mock.patch(
-            "repokit.cli.check_prerequisites",
+            "ghinit.cli.check_prerequisites",
             side_effect=lambda: operations.append("check_prerequisites"),
         ), mock.patch(
-            "repokit.cli.create_remote_repo",
+            "ghinit.cli.create_remote_repo",
             side_effect=lambda name, visibility: operations.append(
                 ("create_remote_repo", name, visibility)
             )
             or "git@github.com:user/demo-repo.git",
         ), mock.patch(
-            "repokit.cli.apply_template",
+            "ghinit.cli.apply_template",
             side_effect=lambda template, destination, custom_template_dir=None, variables=None: operations.append(
                 ("apply_template", template, destination.name, variables)
             ),
         ), mock.patch(
-            "repokit.cli.fetch_gitignore",
+            "ghinit.cli.fetch_gitignore",
             side_effect=lambda gitignore: operations.append(("fetch_gitignore", gitignore))
             or "__pycache__/\n",
         ), mock.patch(
-            "repokit.cli.init_local_repo",
+            "ghinit.cli.init_local_repo",
             side_effect=lambda destination, remote_url, gitignore_content, remote_name="origin": operations.append(
                 ("init_local_repo", destination.name, remote_url, gitignore_content)
             ),
         ), mock.patch(
-            "repokit.cli.push_to_remote",
+            "ghinit.cli.push_to_remote",
             side_effect=lambda destination, remote_name="origin": operations.append(("push_to_remote", destination.name)),
         ):
             runner = CliRunner()
@@ -81,37 +81,37 @@ class CliTests(unittest.TestCase):
             "templates": {"custom_dir": ""},
         }
 
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=None
-        ), mock.patch("repokit.cli.suggest_gitignore", return_value=None), mock.patch(
-            "repokit.cli.check_prerequisites",
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=None
+        ), mock.patch("ghinit.cli.suggest_gitignore", return_value=None), mock.patch(
+            "ghinit.cli.check_prerequisites",
             side_effect=lambda: operations.append("check_prerequisites"),
         ), mock.patch(
-            "repokit.cli.create_remote_repo",
+            "ghinit.cli.create_remote_repo",
             side_effect=lambda name, visibility: operations.append(
                 ("create_remote_repo", name, visibility)
             )
             or "git@github.com:user/demo.git",
         ), mock.patch(
-            "repokit.cli.apply_template",
+            "ghinit.cli.apply_template",
             side_effect=lambda template, destination, custom_template_dir=None, variables=None: operations.append(
                 ("apply_template", template, destination.name, variables)
             ),
         ), mock.patch(
-            "repokit.cli.fetch_gitignore",
+            "ghinit.cli.fetch_gitignore",
             side_effect=lambda gitignore: operations.append(("fetch_gitignore", gitignore)),
         ), mock.patch(
-            "repokit.cli.init_local_repo",
+            "ghinit.cli.init_local_repo",
             side_effect=lambda destination, remote_url, gitignore_content, remote_name="origin": operations.append(
                 ("init_local_repo", destination.name, remote_url, gitignore_content)
             ),
         ), mock.patch(
-            "repokit.cli.push_to_remote",
+            "ghinit.cli.push_to_remote",
             side_effect=lambda destination, remote_name="origin": operations.append(("push_to_remote", destination.name)),
         ), mock.patch(
-            "repokit.cli.open_remote_repo",
+            "ghinit.cli.open_remote_repo",
             side_effect=lambda name: operations.append(("open_remote_repo", name)),
-        ), mock.patch("repokit.cli.confirm_execution") as confirm_execution:
+        ), mock.patch("ghinit.cli.confirm_execution") as confirm_execution:
             runner = CliRunner()
             result = runner.invoke(main, ["--public", "--template", "none", "--yes", "--open", "demo"])
 
@@ -137,17 +137,17 @@ class CliTests(unittest.TestCase):
             "templates": {"custom_dir": ""},
         }
 
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=None
-        ), mock.patch("repokit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
-            "repokit.cli.prompt_for_template", return_value="none"
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=None
+        ), mock.patch("ghinit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
+            "ghinit.cli.prompt_for_template", return_value="none"
         ), mock.patch(
-            "repokit.cli.get_git_author_name", return_value="Alice"
+            "ghinit.cli.get_git_author_name", return_value="Alice"
         ), mock.patch(
-            "repokit.cli.suggest_gitignore", return_value=None
+            "ghinit.cli.suggest_gitignore", return_value=None
         ), mock.patch(
-            "repokit.cli.confirm_execution", return_value=False
-        ), mock.patch("repokit.cli.execute_steps") as execute_steps:
+            "ghinit.cli.confirm_execution", return_value=False
+        ), mock.patch("ghinit.cli.execute_steps") as execute_steps:
             runner = CliRunner()
             result = runner.invoke(main, [])
 
@@ -163,40 +163,40 @@ class CliTests(unittest.TestCase):
             "templates": {"custom_dir": "/tmp/custom-templates"},
         }
 
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=Path("/tmp/custom-templates")
-        ), mock.patch("repokit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
-            "repokit.cli.prompt_for_template"
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=Path("/tmp/custom-templates")
+        ), mock.patch("ghinit.cli.prompt_for_name", return_value="demo-repo"), mock.patch(
+            "ghinit.cli.prompt_for_template"
         ) as prompt_for_template, mock.patch(
-            "repokit.cli.get_git_author_name", return_value="Alice"
+            "ghinit.cli.get_git_author_name", return_value="Alice"
         ), mock.patch(
-            "repokit.cli.confirm_execution", return_value=True
+            "ghinit.cli.confirm_execution", return_value=True
         ), mock.patch(
-            "repokit.cli.suggest_gitignore", return_value="Python"
+            "ghinit.cli.suggest_gitignore", return_value="Python"
         ), mock.patch(
-            "repokit.cli.check_prerequisites",
+            "ghinit.cli.check_prerequisites",
             side_effect=lambda: operations.append("check_prerequisites"),
         ), mock.patch(
-            "repokit.cli.create_remote_repo",
+            "ghinit.cli.create_remote_repo",
             side_effect=lambda name, visibility: operations.append(
                 ("create_remote_repo", name, visibility)
             )
             or "git@github.com:user/demo-repo.git",
         ), mock.patch(
-            "repokit.cli.apply_template",
+            "ghinit.cli.apply_template",
             side_effect=lambda template, destination, custom_template_dir=None, variables=None: operations.append(
                 ("apply_template", template, destination.name, str(custom_template_dir), variables)
             ),
         ), mock.patch(
-            "repokit.cli.fetch_gitignore",
+            "ghinit.cli.fetch_gitignore",
             side_effect=lambda gitignore: operations.append(("fetch_gitignore", gitignore)) or "__pycache__/\n",
         ), mock.patch(
-            "repokit.cli.init_local_repo",
+            "ghinit.cli.init_local_repo",
             side_effect=lambda destination, remote_url, gitignore_content, remote_name="origin": operations.append(
                 ("init_local_repo", destination.name, remote_url, gitignore_content, remote_name)
             ),
         ), mock.patch(
-            "repokit.cli.push_to_remote",
+            "ghinit.cli.push_to_remote",
             side_effect=lambda destination, remote_name="origin": operations.append(
                 ("push_to_remote", destination.name, remote_name)
             ),
@@ -235,7 +235,7 @@ class CliTests(unittest.TestCase):
             "defaults": {"visibility": "private", "template": "none", "remote": "origin"},
             "templates": {"custom_dir": ""},
         }
-        with mock.patch("repokit.cli.load_config", return_value=config):
+        with mock.patch("ghinit.cli.load_config", return_value=config):
             runner = CliRunner()
             result = runner.invoke(main, ["config", "--show"])
 
@@ -247,7 +247,7 @@ class CliTests(unittest.TestCase):
             "defaults": {"visibility": "private", "template": "none", "remote": "origin"},
             "templates": {"custom_dir": ""},
         }
-        with mock.patch("repokit.cli.reset_config", return_value=config):
+        with mock.patch("ghinit.cli.reset_config", return_value=config):
             runner = CliRunner()
             result = runner.invoke(main, ["config", "--reset"])
 
@@ -260,13 +260,13 @@ class CliTests(unittest.TestCase):
             "templates": {"custom_dir": ""},
         }
         saved = {}
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=None
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=None
         ), mock.patch(
-            "repokit.cli.prompt_for_config_value",
+            "ghinit.cli.prompt_for_config_value",
             side_effect=["public", "react", "upstream", "~/templates"],
         ), mock.patch(
-            "repokit.cli.save_config",
+            "ghinit.cli.save_config",
             side_effect=lambda value: saved.setdefault("config", value),
         ):
             runner = CliRunner()
@@ -286,10 +286,10 @@ class CliTests(unittest.TestCase):
             "defaults": {"visibility": "private", "template": "none", "remote": "origin"},
             "templates": {"custom_dir": ""},
         }
-        with mock.patch("repokit.cli.load_config", return_value=config), mock.patch(
-            "repokit.cli.custom_template_dir", return_value=None
+        with mock.patch("ghinit.cli.load_config", return_value=config), mock.patch(
+            "ghinit.cli.custom_template_dir", return_value=None
         ), mock.patch(
-            "repokit.cli.discover_template_manifests", return_value=manifests
+            "ghinit.cli.discover_template_manifests", return_value=manifests
         ):
             runner = CliRunner()
             result = runner.invoke(main, ["templates"])

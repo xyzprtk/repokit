@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest import mock
 
-from repokit.core import CommandExecutionError, RepokitError, check_prerequisites, init_local_repo, open_remote_repo, push_to_remote, apply_template
+from ghinit.core import CommandExecutionError, GhinitError, check_prerequisites, init_local_repo, open_remote_repo, push_to_remote, apply_template
 
 
 class CoreTests(unittest.TestCase):
@@ -27,7 +27,7 @@ class CoreTests(unittest.TestCase):
 
     def test_apply_template_rejects_unknown_template(self) -> None:
         with TemporaryDirectory() as tmp:
-            with self.assertRaises(RepokitError):
+            with self.assertRaises(GhinitError):
                 apply_template("unknown", Path(tmp))
 
     def test_apply_template_renders_path_variables(self) -> None:
@@ -52,7 +52,7 @@ class CoreTests(unittest.TestCase):
 
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
-            with mock.patch("repokit.core.run_command", side_effect=fake_run_command):
+            with mock.patch("ghinit.core.run_command", side_effect=fake_run_command):
                 init_local_repo(
                     destination=root,
                     remote_url="git@github.com:example/project.git",
@@ -82,7 +82,7 @@ class CoreTests(unittest.TestCase):
 
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
-            with mock.patch("repokit.core.run_command", side_effect=fake_run_command):
+            with mock.patch("ghinit.core.run_command", side_effect=fake_run_command):
                 init_local_repo(
                     destination=root,
                     remote_url="git@github.com:example/project.git",
@@ -95,8 +95,8 @@ class CoreTests(unittest.TestCase):
         )
 
     def test_check_prerequisites_reports_missing_auth(self) -> None:
-        with mock.patch("repokit.core.shutil.which", return_value="/usr/bin/tool"), mock.patch(
-            "repokit.core.run_command",
+        with mock.patch("ghinit.core.shutil.which", return_value="/usr/bin/tool"), mock.patch(
+            "ghinit.core.run_command",
             side_effect=CommandExecutionError(
                 args=["gh", "auth", "status"],
                 stderr="not logged in",
@@ -104,12 +104,12 @@ class CoreTests(unittest.TestCase):
                 returncode=1,
             ),
         ):
-            with self.assertRaisesRegex(RepokitError, "gh auth login"):
+            with self.assertRaisesRegex(GhinitError, "gh auth login"):
                 check_prerequisites()
 
     def test_push_to_remote_wraps_failures(self) -> None:
         with mock.patch(
-            "repokit.core.run_command",
+            "ghinit.core.run_command",
             side_effect=CommandExecutionError(
                 args=["git", "push", "-u", "origin", "main"],
                 stderr="permission denied",
@@ -117,11 +117,11 @@ class CoreTests(unittest.TestCase):
                 returncode=1,
             ),
         ):
-            with self.assertRaisesRegex(RepokitError, "Failed to push to GitHub"):
+            with self.assertRaisesRegex(GhinitError, "Failed to push to GitHub"):
                 push_to_remote(Path.cwd())
 
     def test_push_to_remote_uses_custom_remote_name(self) -> None:
-        with mock.patch("repokit.core.run_command", return_value=mock.Mock(stdout="", stderr="", returncode=0)) as run_command:
+        with mock.patch("ghinit.core.run_command", return_value=mock.Mock(stdout="", stderr="", returncode=0)) as run_command:
             push_to_remote(Path.cwd(), remote_name="upstream")
 
         run_command.assert_called_once_with(
@@ -131,7 +131,7 @@ class CoreTests(unittest.TestCase):
 
     def test_open_remote_repo_wraps_failures(self) -> None:
         with mock.patch(
-            "repokit.core.run_command",
+            "ghinit.core.run_command",
             side_effect=CommandExecutionError(
                 args=["gh", "repo", "view", "demo", "--web"],
                 stderr="cannot open browser",
@@ -139,7 +139,7 @@ class CoreTests(unittest.TestCase):
                 returncode=1,
             ),
         ):
-            with self.assertRaisesRegex(RepokitError, "opening it in the browser failed"):
+            with self.assertRaisesRegex(GhinitError, "opening it in the browser failed"):
                 open_remote_repo("demo")
 
 

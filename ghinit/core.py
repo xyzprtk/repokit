@@ -1,4 +1,4 @@
-"""Core git and GitHub operations for repokit."""
+"""Core git and GitHub operations for ghinit."""
 
 from __future__ import annotations
 
@@ -10,14 +10,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, Optional
 
-from repokit.templates import discover_template_manifests
+from ghinit.templates import discover_template_manifests
 
 
-class RepokitError(RuntimeError):
+class GhinitError(RuntimeError):
     """Raised when a repo creation step fails."""
 
 
-class CommandExecutionError(RepokitError):
+class CommandExecutionError(GhinitError):
     """Raised when a subprocess command fails."""
 
     def __init__(self, args: Iterable[str], stderr: str, stdout: str, returncode: int) -> None:
@@ -68,13 +68,13 @@ def run_command(
 def check_prerequisites() -> None:
     for tool in ("git", "gh"):
         if shutil.which(tool) is None:
-            raise RepokitError(
+            raise GhinitError(
                 f"Missing required dependency '{tool}'. Install it before running repo."
             )
     try:
         run_command(["gh", "auth", "status"])
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             "GitHub CLI is not authenticated. Run 'gh auth login' and try again."
         ) from exc
 
@@ -84,11 +84,11 @@ def get_authenticated_username() -> str:
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
-        raise RepokitError("Failed to parse GitHub username from gh api user output.") from exc
+        raise GhinitError("Failed to parse GitHub username from gh api user output.") from exc
 
     username = payload.get("login")
     if not username:
-        raise RepokitError("Unable to determine authenticated GitHub username.")
+        raise GhinitError("Unable to determine authenticated GitHub username.")
     return str(username)
 
 
@@ -96,12 +96,12 @@ def get_git_author_name(destination: Optional[Path] = None) -> str:
     try:
         result = run_command(["git", "config", "user.name"], cwd=destination)
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             "Unable to determine the git author name. Configure git user.name before using template variables."
         ) from exc
     author = result.stdout.strip()
     if not author:
-        raise RepokitError(
+        raise GhinitError(
             "Unable to determine the git author name. Configure git user.name before using template variables."
         )
     return author
@@ -109,14 +109,14 @@ def get_git_author_name(destination: Optional[Path] = None) -> str:
 
 def create_remote_repo(name: str, visibility: str) -> str:
     if visibility not in {"public", "private"}:
-        raise RepokitError(f"Unsupported visibility '{visibility}'.")
+        raise GhinitError(f"Unsupported visibility '{visibility}'.")
 
     username = get_authenticated_username()
     flag = f"--{visibility}"
     try:
         run_command(["gh", "repo", "create", name, flag, "--confirm"])
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             f"Failed to create GitHub repository '{name}'. Check whether the name is available and your GitHub auth is valid."
         ) from exc
     return f"git@github.com:{username}/{name}.git"
@@ -137,7 +137,7 @@ def fetch_gitignore(gitignore_name: Optional[str]) -> Optional[str]:
             ]
         )
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             f"Failed to fetch the '{gitignore_name}' .gitignore template from GitHub."
         ) from exc
     return result.stdout + "\n" if result.stdout else None
@@ -163,7 +163,7 @@ def apply_template(
     manifest = templates.get(template)
     if manifest is None:
         available = ", ".join(templates) or "none"
-        raise RepokitError(
+        raise GhinitError(
             f"Unknown template '{template}'. Available templates: {available}."
         )
 
@@ -220,10 +220,10 @@ def init_local_repo(
         run_command(["git", "remote", "add", remote_name, remote_url], cwd=destination)
     except CommandExecutionError as exc:
         if exc.args_list[:3] == ["git", "commit", "-m"]:
-            raise RepokitError(
+            raise GhinitError(
                 "Git could not create the initial commit. Configure your git user.name and user.email first."
             ) from exc
-        raise RepokitError(
+        raise GhinitError(
             "Failed to initialize the local git repository. Check the current directory permissions and git configuration."
         ) from exc
 
@@ -232,7 +232,7 @@ def push_to_remote(destination: Path, remote_name: str = "origin") -> None:
     try:
         run_command(["git", "push", "-u", remote_name, "main"], cwd=destination)
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             "Failed to push to GitHub. Check your SSH setup or GitHub CLI authentication."
         ) from exc
 
@@ -241,7 +241,7 @@ def open_remote_repo(name: str) -> None:
     try:
         run_command(["gh", "repo", "view", name, "--web"])
     except CommandExecutionError as exc:
-        raise RepokitError(
+        raise GhinitError(
             "Repository was created, but opening it in the browser failed. Try 'gh repo view --web' manually."
         ) from exc
 

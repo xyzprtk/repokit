@@ -1,4 +1,4 @@
-"""Configuration management for repokit."""
+"""Configuration management for ghinit."""
 
 from __future__ import annotations
 
@@ -30,10 +30,10 @@ def default_config() -> Dict[str, Dict[str, str]]:
 
 
 def config_path() -> Path:
-    override = os.getenv("REPOKIT_CONFIG_PATH")
+    override = os.getenv("GHINIT_CONFIG_PATH")
     if override:
         return Path(override).expanduser()
-    return Path.home() / ".repokit.toml"
+    return Path.home() / ".ghinit.toml"
 
 
 def _ensure_shape(config: Dict[str, Any]) -> Dict[str, Dict[str, str]]:

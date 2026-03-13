@@ -1,17 +1,17 @@
-# repokit
+# ghinit
 
-`repokit` is a Python CLI for creating GitHub repositories and bootstrapping the
+`ghinit` is a Python CLI for creating GitHub repositories and bootstrapping the
 current directory without leaving the terminal.
 
 It wraps `gh` and `git`, adds interactive prompts with sensible defaults, and
 can scaffold a starter project template before the first push.
 
-## Why repokit
+## Why ghinit
 
 - Create a GitHub repo from the terminal with one command.
 - Avoid the repeated `git init`, `git add`, `git commit`, remote setup, and push flow.
 - Reuse starter templates for APIs, CLIs, frontends, and ML projects.
-- Keep defaults in `~/.repokit.toml` so repeated setup takes less time.
+- Keep defaults in `~/.ghinit.toml` so repeated setup takes less time.
 
 ## Requirements
 
@@ -24,7 +24,7 @@ can scaffold a starter project template before the first push.
 From PyPI:
 
 ```bash
-pip install repokit
+pip install ghinit
 ```
 
 For local development:
@@ -61,7 +61,7 @@ repo my-ui --public --template react --open
 
 ## How It Works
 
-When you run `repo`, repokit:
+When you run `repo`, ghinit:
 
 1. Verifies `git` and `gh` are installed and that `gh` is authenticated.
 2. Creates the remote GitHub repository with `gh repo create`.
@@ -86,7 +86,7 @@ Options:
 
 ### `repo config`
 
-View or update persistent defaults stored in `~/.repokit.toml`.
+View or update persistent defaults stored in `~/.ghinit.toml`.
 
 Examples:
 

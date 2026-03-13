@@ -3,14 +3,14 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "repokit"
+name = "ghinit"
 version = "1.0.0"
 description = "CLI tool for creating and initializing GitHub repositories from the terminal."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [
-  { name = "repokit contributors" }
+  { name = "ghinit contributors" }
 ]
 keywords = ["cli", "github", "git", "developer-tools", "automation"]
 classifiers = [
@@ -36,9 +36,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/xyzprtk/repokit"
-Repository = "https://github.com/xyzprtk/repokit"
-Issues = "https://github.com/xyzprtk/repokit/issues"
+Homepage = "https://github.com/xyzprtk/ghinit"
+Repository = "https://github.com/xyzprtk/ghinit"
+Issues = "https://github.com/xyzprtk/ghinit/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -49,16 +49,16 @@ dev = [
 ]
 
 [project.scripts]
-repo = "repokit.cli:main"
+repo = "ghinit.cli:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["repokit*"]
+include = ["ghinit*"]
 
 [tool.setuptools.package-data]
-repokit = ["templates/**/*"]
+ghinit = ["templates/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

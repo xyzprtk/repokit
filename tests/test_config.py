@@ -2,13 +2,13 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from repokit.config import custom_template_dir, load_config, render_toml, reset_config, save_config
+from ghinit.config import custom_template_dir, load_config, render_toml, reset_config, save_config
 
 
 class ConfigTests(unittest.TestCase):
     def test_load_config_creates_default_file(self) -> None:
         with TemporaryDirectory() as tmp:
-            path = Path(tmp) / "repokit.toml"
+            path = Path(tmp) / "ghinit.toml"
             config = load_config(path)
 
             self.assertTrue(path.exists())
@@ -17,7 +17,7 @@ class ConfigTests(unittest.TestCase):
 
     def test_save_and_load_round_trip(self) -> None:
         with TemporaryDirectory() as tmp:
-            path = Path(tmp) / "repokit.toml"
+            path = Path(tmp) / "ghinit.toml"
             config = load_config(path)
             config["defaults"]["template"] = "flask"
             config["templates"]["custom_dir"] = "~/templates"
@@ -29,7 +29,7 @@ class ConfigTests(unittest.TestCase):
 
     def test_reset_config_restores_defaults(self) -> None:
         with TemporaryDirectory() as tmp:
-            path = Path(tmp) / "repokit.toml"
+            path = Path(tmp) / "ghinit.toml"
             save_config(
                 {
                     "defaults": {"visibility": "public", "template": "react", "remote": "upstream"},

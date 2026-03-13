@@ -1,4 +1,4 @@
-"""Click entry point for repokit."""
+"""Click entry point for ghinit."""
 
 from __future__ import annotations
 
@@ -12,10 +12,10 @@ try:
 except ImportError:  # pragma: no cover - exercised in sandboxed environments
     questionary = None
 
-from repokit import __version__
-from repokit.config import config_path, custom_template_dir, load_config, reset_config, save_config
-from repokit.core import (
-    RepokitError,
+from ghinit import __version__
+from ghinit.config import config_path, custom_template_dir, load_config, reset_config, save_config
+from ghinit.core import (
+    GhinitError,
     apply_template,
     check_prerequisites,
     create_remote_repo,
@@ -27,8 +27,8 @@ from repokit.core import (
     render_template_content,
     terminal_supports_color,
 )
-from repokit.detect import suggest_gitignore
-from repokit.templates import discover_template_manifests
+from ghinit.detect import suggest_gitignore
+from ghinit.templates import discover_template_manifests
 
 
 Step = Tuple[str, Callable[[], None]]
@@ -165,7 +165,7 @@ def execute_steps(steps: Sequence[Step]) -> None:
         click.echo(f"{step_label(index, total, label)} ... ", nl=False)
         try:
             operation()
-        except RepokitError as exc:
+        except GhinitError as exc:
             click.echo(err("FAIL"))
             raise click.ClickException(str(exc)) from exc
         click.echo(ok("OK"))
@@ -343,7 +343,7 @@ def create_command(
         click.echo(info("Opening repository in browser..."))
         try:
             open_remote_repo(repo_name)
-        except RepokitError as exc:
+        except GhinitError as exc:
             raise click.ClickException(str(exc)) from exc
 
     if selected_template != "none":
@@ -358,7 +358,7 @@ def create_command(
 @click.option("--show", "show_config", is_flag=True, help="Print the current config.")
 @click.option("--reset", "reset_to_defaults", is_flag=True, help="Reset the config to defaults.")
 def config_command(show_config: bool, reset_to_defaults: bool) -> None:
-    """View or update repokit configuration."""
+    """View or update ghinit configuration."""
     if show_config and reset_to_defaults:
         raise click.ClickException("Use either --show or --reset, not both.")
 
