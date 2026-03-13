@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Bumped the release version to publish the first public `ghinit` release.
+
 ## 1.0.0
 
 - Finalized packaging metadata for a stable `ghinit` release.
