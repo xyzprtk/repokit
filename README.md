@@ -1,17 +1,17 @@
-# repox
+# repokit
 
-`repox` is a Python CLI for creating GitHub repositories and bootstrapping the
+`repokit` is a Python CLI for creating GitHub repositories and bootstrapping the
 current directory without leaving the terminal.
 
 It wraps `gh` and `git`, adds interactive prompts with sensible defaults, and
 can scaffold a starter project template before the first push.
 
-## Why repox
+## Why repokit
 
 - Create a GitHub repo from the terminal with one command.
 - Avoid the repeated `git init`, `git add`, `git commit`, remote setup, and push flow.
 - Reuse starter templates for APIs, CLIs, frontends, and ML projects.
-- Keep defaults in `~/.repox.toml` so repeated setup takes less time.
+- Keep defaults in `~/.repokit.toml` so repeated setup takes less time.
 
 ## Requirements
 
@@ -24,7 +24,7 @@ can scaffold a starter project template before the first push.
 From PyPI:
 
 ```bash
-pip install repox
+pip install repokit
 ```
 
 For local development:
@@ -61,7 +61,7 @@ repo my-ui --public --template react --open
 
 ## How It Works
 
-When you run `repo`, repox:
+When you run `repo`, repokit:
 
 1. Verifies `git` and `gh` are installed and that `gh` is authenticated.
 2. Creates the remote GitHub repository with `gh repo create`.
@@ -86,7 +86,7 @@ Options:
 
 ### `repo config`
 
-View or update persistent defaults stored in `~/.repox.toml`.
+View or update persistent defaults stored in `~/.repokit.toml`.
 
 Examples:
 

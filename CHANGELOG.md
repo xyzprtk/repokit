@@ -2,7 +2,7 @@
 
 ## 1.0.0
 
-- Finalized packaging metadata for a stable `repox` release.
+- Finalized packaging metadata for a stable `repokit` release.
 - Added polished README documentation covering install, commands, config, templates, and release flow.
 - Added GitHub Actions workflows for CI on pushes and pull requests.
 - Added a tagged release workflow that builds the package and publishes it to PyPI.
@@ -16,7 +16,7 @@
 
 ## 0.3.0
 
-- Added persistent configuration in `~/.repox.toml`.
+- Added persistent configuration in `~/.repokit.toml`.
 - Added `repo config`, `repo config --show`, and `repo config --reset`.
 - Added support for custom template directories and configurable default remote names.
 

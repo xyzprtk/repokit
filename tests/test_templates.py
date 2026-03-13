@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from repox.templates import discover_template_manifests
+from repokit.templates import discover_template_manifests
 
 
 class TemplateTests(unittest.TestCase):

@@ -2,7 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from repox.detect import detect_language, suggest_gitignore
+from repokit.detect import detect_language, suggest_gitignore
 
 
 class DetectTests(unittest.TestCase):

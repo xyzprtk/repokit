@@ -3,14 +3,14 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "repox"
+name = "repokit"
 version = "1.0.0"
 description = "CLI tool for creating and initializing GitHub repositories from the terminal."
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 authors = [
-  { name = "repox contributors" }
+  { name = "repokit contributors" }
 ]
 keywords = ["cli", "github", "git", "developer-tools", "automation"]
 classifiers = [
@@ -35,9 +35,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/xyzprtk/repox"
-Repository = "https://github.com/xyzprtk/repox"
-Issues = "https://github.com/xyzprtk/repox/issues"
+Homepage = "https://github.com/xyzprtk/repokit"
+Repository = "https://github.com/xyzprtk/repokit"
+Issues = "https://github.com/xyzprtk/repokit/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -47,16 +47,16 @@ dev = [
 ]
 
 [project.scripts]
-repo = "repox.cli:main"
+repo = "repokit.cli:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["repox*"]
+include = ["repokit*"]
 
 [tool.setuptools.package-data]
-repox = ["templates/**/*"]
+repokit = ["templates/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
